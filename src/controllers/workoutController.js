@@ -1,20 +1,47 @@
+const workoutService = require("../services/workoutService");
+
 const getAllWorkouts = (req, res) => {
-  res.send("Get All Workouts");
+  const allWorkouts = workoutService.getAllWorkouts();
+  res.send({ status: "OK", data: allWorkouts });
 };
 
 const getOneWorkout = (req, res) => {
+  const workout = workoutService.getOneWorkout(req.params.workoutId);
   res.send(`Get workout ${req.params.workoutId}`);
 };
 
 const createNewWorkout = (req, res) => {
-  res.send(`Create workout`);
+  const { body } = req;
+
+  if (
+    !body.name ||
+    !body.mode ||
+    !body.equipment ||
+    !body.exercises ||
+    !body.trainerTips
+  ) {
+    return;
+  }
+
+  const newWorkout = {
+    name: body.name,
+    body: body.name,
+    equipment: body.equipment,
+    exercises: body.exercises,
+    trainerTips: body.trainerTips,
+  };
+  const createdWorkout = workoutService.createNewWorkout(newWorkout);
+  console.log(createdWorkout);
+  res.status(201).send({ status: "OK", data: createdWorkout });
 };
 
 const updateOneWorkout = (req, res) => {
+  const updatedWorkout = workoutService.updateOneWorkout(req.params.workoutId);
   res.send(`Update workout ${req.params.workoutId}`);
 };
 
 const deleteOneWorkout = (req, res) => {
+  workoutService.deleteOneWorkout(req.params.workoutId);
   res.send(`Delete workout ${req.params.workoutId}`);
 };
 
